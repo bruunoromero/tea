@@ -1,6 +1,6 @@
 {
   "name": "@bruunoromero/tea-react",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "> TODO: description",
   "author": "Bruno Romero <bruunobromero@gmail.com>",
   "homepage": "https://github.com/bruunoromero/tea#readme",
@@ -26,7 +26,7 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@bruunoromero/tea": "^0.2.1",
+    "@bruunoromero/tea": "^0.2.2",
     "@types/react": "^18.0.26",
     "react": "^18.2.0",
     "rimraf": "^3.0.2",
