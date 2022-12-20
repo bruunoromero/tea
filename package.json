@@ -1,8 +1,5 @@
 {
-  "name": "@bruunoromero/tea",
-  "private": "true",
-  "version": "0.1.1",
-  "license": "MIT",
+  "private": true,
   "author": "Bruno Romero",
   "repository": {
     "type": "git",

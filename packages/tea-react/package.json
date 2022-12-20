@@ -1,5 +1,5 @@
 {
-  "name": "@bruunoromero/tea",
+  "name": "@bruunoromero/tea-react",
   "version": "0.1.2",
   "description": "> TODO: description",
   "author": "Bruno Romero <bruunobromero@gmail.com>",
@@ -21,7 +21,14 @@
   "bugs": {
     "url": "https://github.com/bruunoromero/tea/issues"
   },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "@bruunoromero/tea": "^0.1.2"
+  },
   "devDependencies": {
+    "@bruunoromero/tea": "^0.1.2",
+    "@types/react": "^18.0.26",
+    "react": "^18.2.0",
     "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
   }
