@@ -1,4 +1,4 @@
-import { Tea } from "@bruunoromero/tea";
+import { Dispatch, Tea } from "@bruunoromero/tea";
 import React, {
   PropsWithChildren,
   useState,
@@ -6,8 +6,6 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-
-type Dispatch<M> = (message: M) => void;
 
 export type TeaProvider = React.FC<PropsWithChildren>;
 
