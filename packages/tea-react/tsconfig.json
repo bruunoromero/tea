@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react",
     "outDir": "dist",
-    "target": "ES3",
+    "target": "ES2015",
     "module": "CommonJS",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
