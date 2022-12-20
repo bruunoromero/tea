@@ -3,3 +3,4 @@ devenv.local.nix
 dist/
 node_modules/
 *.log
+.npmrc

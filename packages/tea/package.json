@@ -1,0 +1,29 @@
+{
+  "name": "@bruunoromero/tea",
+  "version": "0.1.1",
+  "description": "> TODO: description",
+  "author": "Bruno Romero <bruunobromero@gmail.com>",
+  "homepage": "https://github.com/bruunoromero/tea#readme",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bruunoromero/tea.git"
+  },
+  "scripts": {
+    "prepublishOnly": "rimraf dist && tsc",
+    "test": "node ./__tests__/tea.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/bruunoromero/tea/issues"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.9.4"
+  }
+}
