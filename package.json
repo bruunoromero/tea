@@ -10,6 +10,7 @@
     "url": "git+https://github.com/bruunoromero/tea.git"
   },
   "scripts": {
+    "prepublish": "tsc",
     "build": "tsc"
   },
   "devDependencies": {
