@@ -1,6 +1,6 @@
 {
   "name": "@bruunoromero/rescript-tea",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "> TODO: description",
   "author": "Bruno Romero <bruunobromero@gmail.com>",
   "homepage": "https://github.com/bruunoromero/tea#readme",
@@ -23,7 +23,7 @@
     "@bruunoromero/tea": "^0.2.2"
   },
   "devDependencies": {
-    "@bruunoromero/tea": "^0.2.2",
+    "@bruunoromero/tea": "^0.3.0",
     "rescript": "^10.0.1"
   }
 }
