@@ -1,0 +1,29 @@
+{
+  "name": "@bruunoromero/rescript-tea",
+  "version": "0.2.3",
+  "description": "> TODO: description",
+  "author": "Bruno Romero <bruunobromero@gmail.com>",
+  "homepage": "https://github.com/bruunoromero/tea#readme",
+  "license": "MIT",
+  "main": "./src/Tea.bs.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bruunoromero/tea.git"
+  },
+  "scripts": {
+    "prepublishOnly": "rescript build -with-deps"
+  },
+  "bugs": {
+    "url": "https://github.com/bruunoromero/tea/issues"
+  },
+  "peerDependencies": {
+    "@bruunoromero/tea": "^0.2.2"
+  },
+  "devDependencies": {
+    "@bruunoromero/tea": "^0.2.2",
+    "rescript": "^10.0.1"
+  }
+}

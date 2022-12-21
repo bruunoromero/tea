@@ -1,0 +1,20 @@
+{
+  "name": "@bruunoromero/rescript-tea-react",
+  "version": "0.3.0",
+  "sources": {
+    "dir" : "src",
+    "subdirs" : true
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "reason": {
+    "react-jsx": 3
+  },
+  "bs-dependencies": [
+    "@rescript/react",
+    "@bruunoromero/rescript-tea"
+  ],
+  "suffix": ".bs.js"
+}

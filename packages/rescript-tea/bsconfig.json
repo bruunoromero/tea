@@ -1,0 +1,13 @@
+{
+  "name": "@bruunoromero/rescript-tea",
+  "version": "0.3.0",
+  "sources": {
+    "dir" : "src",
+    "subdirs" : true
+  },
+  "package-specs": {
+    "module": "commonjs",
+    "in-source": true
+  },
+  "suffix": ".bs.js"
+}

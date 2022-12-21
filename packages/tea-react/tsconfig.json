@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "rootDir": "src",
     "outDir": "dist",
     "target": "ES2015",
     "module": "CommonJS",
@@ -9,8 +10,6 @@
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": false,
-    "declaration": true,
-    "typeRoots": ["node_modules/@types"]
-  },
-  "exclude": ["node_modules"]
+    "declaration": true
+  }
 }
