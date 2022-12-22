@@ -1,31 +1,31 @@
-import {
-  mapObservable,
-  mergeObservables,
-  Observable,
-  observableFromPromise,
-} from "./observable";
+import { EMPTY, Observable, of, merge } from "rxjs";
+import { map as RxMap } from "rxjs/operators";
 
-export type Cmd<M> = () => Observable<M>;
+type Task<M> = () => Promise<M>;
+
+export type Cmd<M> = Observable<Task<M>>;
 
 const batch = <M>(cmds: Cmd<M>[]): Cmd<M> => {
-  return () => {
-    return mergeObservables(cmds.map((cmd) => cmd()));
-  };
+  return merge(...cmds);
 };
 
 const task = <M>(task: () => Promise<M>): Cmd<M> => {
-  return () => {
-    return observableFromPromise(task());
-  };
+  return of(task);
 };
 
-const map = <M, N>(cmd: Cmd<N>, mapper: (message: N) => M): Cmd<M> => {
-  return () => mapObservable(cmd(), mapper);
+const map = <N, M>(cmd: Cmd<N>, mapper: (msg: N) => M): Cmd<M> => {
+  const mapTask = (task: Task<N>): Task<M> => {
+    return () => task().then(mapper);
+  };
+
+  return cmd.pipe(RxMap((task) => mapTask(task)));
 };
+
+const none: Cmd<never> = EMPTY;
 
 export const Cmd = {
   map,
   task,
   batch,
-  none: batch<any>([]),
+  none,
 };

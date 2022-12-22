@@ -2,15 +2,15 @@
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "target": "ES3",
-    "module": "CommonJS",
+    "target": "ES2015",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": false,
-    "declaration": true,
-    "typeRoots": ["node_modules/@types"]
+    "declaration": true
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

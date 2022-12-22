@@ -15,14 +15,14 @@
     "url": "git+https://github.com/bruunoromero/tea.git"
   },
   "scripts": {
-    "prepublishOnly": "rimraf dist && tsc",
-    "test": "node ./__tests__/tea.test.js"
+    "build:clean": "rimraf dist && tsc"
   },
   "bugs": {
     "url": "https://github.com/bruunoromero/tea/issues"
   },
   "devDependencies": {
     "rimraf": "^3.0.2",
+    "rxjs": "^7.8.0",
     "typescript": "^4.9.4"
   },
   "gitHead": "7b0c20da358a2937d52acbd37fce23ed7c3eb2a7"

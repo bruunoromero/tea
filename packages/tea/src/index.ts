@@ -1,13 +1,18 @@
+import { BehaviorSubject, Observer as RxObserver, Subscription } from "rxjs";
+import { startWith, map, distinctUntilChanged, mergeAll } from "rxjs/operators";
 import { Cmd } from "./cmd";
-import { createObservable, Subscribe } from "./observable";
 
 export type Update<S, M> = (state: S, message: M) => [S, Cmd<M>];
 
 export type Dispatch<M> = (message: M) => void;
 
+export type Observer<S> = Partial<RxObserver<S>> | ((model: S) => void);
+
+export type Unsubscriber = () => void;
+
 export type Tea<S, M> = {
   getState: () => S;
-  subscribe: Subscribe<S>;
+  subscribe: (observer: Observer<S>) => Unsubscriber;
   dispatch: Dispatch<M>;
   complete: () => void;
 };
@@ -15,52 +20,52 @@ export type Tea<S, M> = {
 export { Cmd } from "./cmd";
 
 export const create = <S, M>(
-  initialState: S,
+  init: [S, Cmd<M>],
   update: Update<S, M>
 ): Tea<S, M> => {
-  let state: S;
   let isCompleted = false;
-  const stateObs = createObservable<S>();
-  const cmdObs = createObservable<M>();
+  const state$ = new BehaviorSubject(init);
 
-  const getState = () => state;
+  const model$ = state$.pipe(
+    map((state) => state[0]),
+    distinctUntilChanged()
+  );
 
-  const subscribe: Subscribe<S> = (subscriber) =>
-    stateObs.subscribe(subscriber);
+  const cmd$ = state$.pipe(
+    startWith(init),
+    map((state) => state[1]),
+    distinctUntilChanged(),
+    mergeAll()
+  );
 
-  const next = (newState: S) => {
-    if (newState !== state) {
-      state = newState;
-      stateObs.next(newState);
-    }
+  const getState = () => state$.getValue()[0];
+
+  const dispatch = (msg: M) => {
+    if (isCompleted) return;
+    const nextState = update(getState(), msg);
+
+    state$.next(nextState);
   };
 
-  const dispatch = (message: M) => {
-    if (isCompleted) return;
-    const [newState, cmd] = update(state, message);
-
-    next(newState);
-    cmd().subscribe((message) => {
-      cmdObs.next(message);
-    });
+  const subscribe = (subscription: Observer<S>) => {
+    return () => model$.subscribe(subscription).unsubscribe();
   };
 
   const complete = () => {
     isCompleted = true;
-    stateObs.complete();
-    cmdObs.complete();
+    state$.complete();
   };
 
-  cmdObs.subscribe((message) => {
-    dispatch(message);
+  cmd$.subscribe((task) => {
+    task().then((msg) => {
+      dispatch(msg);
+    });
   });
-
-  next(initialState);
 
   return {
     getState,
-    subscribe,
     dispatch,
+    subscribe,
     complete,
   };
 };

@@ -19,13 +19,10 @@ type update<'a, 'b> = ('a, 'b) => ('a, Cmd.t<'b>)
 
 type unsubscriber = unit => unit
 
-type subscriber<'a> = {
-  next: 'a => unit,
-  complete: unit => unit,
-}
+type subscriber<'a> = 'a => unit
 
 @module("@bruunoromero/tea")
-external create: ('a, update<'a, 'b>) => t<'a, 'b> = "create"
+external create: (('a, Cmd.t<'b>), update<'a, 'b>) => t<'a, 'b> = "create"
 
 @send
 external getState: t<'a, 'b> => 'a = "getState"

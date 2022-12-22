@@ -14,7 +14,7 @@
     "url": "git+https://github.com/bruunoromero/tea.git"
   },
   "scripts": {
-    "prepublishOnly": "rescript build -with-deps"
+    "build:clean": "rescript clean && rescript build -with-deps"
   },
   "bugs": {
     "url": "https://github.com/bruunoromero/tea/issues"

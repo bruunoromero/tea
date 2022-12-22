@@ -1,17 +1,17 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "rootDir": "src",
     "outDir": "dist",
     "target": "ES2015",
-    "module": "CommonJS",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
     "skipLibCheck": false,
-    "declaration": true,
-    "typeRoots": ["node_modules/@types"]
+    "declaration": true
   },
-  "exclude": ["node_modules"]
+  "include": ["src/**/*", "tests/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
