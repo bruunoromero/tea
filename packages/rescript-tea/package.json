@@ -20,7 +20,7 @@
     "url": "https://github.com/bruunoromero/tea/issues"
   },
   "peerDependencies": {
-    "@bruunoromero/tea": "^0.2.2"
+    "@bruunoromero/tea": ">=0.6.0"
   },
   "devDependencies": {
     "@bruunoromero/tea": "^0.5.0",

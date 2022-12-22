@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observer as RxObserver, Subscription } from "rxjs";
+import { BehaviorSubject, Observer as RxObserver } from "rxjs";
 import { startWith, map, distinctUntilChanged, mergeAll } from "rxjs/operators";
 import { Cmd } from "./cmd";
 
@@ -47,8 +47,10 @@ export const create = <S, M>(
     state$.next(nextState);
   };
 
-  const subscribe = (subscription: Observer<S>) => {
-    return () => model$.subscribe(subscription).unsubscribe();
+  const subscribe = (observer: Observer<S>) => {
+    const subscription = model$.subscribe(observer);
+
+    return () => subscription.unsubscribe();
   };
 
   const complete = () => {
