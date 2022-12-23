@@ -50,14 +50,6 @@ export const createContext = <S, M>(): Context<S, M> => {
 
     const value = useTea(storeRef.current);
 
-    useEffect(() => {
-      return () => {
-        if (storeRef.current) {
-          storeRef.current.complete();
-        }
-      };
-    }, []);
-
     return createElement(context.Provider, { value }, children);
   };
 
