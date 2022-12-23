@@ -4,8 +4,9 @@ import {
   createContext as createReactContext,
   createElement,
   useRef,
-  useContext,
+  useContext as useReactContext,
   useEffect,
+  useMemo,
 } from "react";
 
 import { useSyncExternalStore } from "use-sync-external-store/shim";
@@ -28,7 +29,7 @@ export type Context<S, M> = {
 const useTea = <S, M>(tea: Tea<S, M>): ContextState<S, M> => {
   const state = useSyncExternalStore(tea.subscribe, tea.getState, tea.getState);
 
-  return [state, tea.dispatch];
+  return useMemo(() => [state, tea.dispatch], [state]);
 };
 
 export const create = <S, M>(tea: Tea<S, M>): UseContext<S, M> => {
@@ -38,7 +39,7 @@ export const create = <S, M>(tea: Tea<S, M>): UseContext<S, M> => {
 };
 
 export const createContext = <S, M>(): Context<S, M> => {
-  const context = createReactContext<Tea<S, M> | undefined>(undefined);
+  const context = createReactContext<[S, Dispatch<M>] | undefined>(undefined);
 
   const Provider: Provider<S, M> = ({ create, children }) => {
     const storeRef = useRef<Tea<S, M>>();
@@ -46,6 +47,8 @@ export const createContext = <S, M>(): Context<S, M> => {
     if (!storeRef.current) {
       storeRef.current = create();
     }
+
+    const value = useTea(storeRef.current);
 
     useEffect(() => {
       return () => {
@@ -55,15 +58,11 @@ export const createContext = <S, M>(): Context<S, M> => {
       };
     }, []);
 
-    return createElement(
-      context.Provider,
-      { value: storeRef.current },
-      children
-    );
+    return createElement(context.Provider, { value }, children);
   };
 
-  const useContextTea = () => {
-    const tea = useContext(context);
+  const useContext = () => {
+    const tea = useReactContext(context);
 
     if (!tea) {
       throw new Error(
@@ -71,8 +70,8 @@ export const createContext = <S, M>(): Context<S, M> => {
       );
     }
 
-    return useTea(tea);
+    return tea;
   };
 
-  return { Provider, useContext: useContextTea };
+  return { Provider, useContext };
 };
