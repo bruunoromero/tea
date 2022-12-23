@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
     "outDir": "dist",
     "target": "ES2015",
     "module": "CommonJS",
@@ -12,6 +11,6 @@
     "skipLibCheck": false,
     "declaration": true
   },
-  "include": ["src/**/*", "tests/**/*"],
+  "include": ["src/**/*", "__tests__/**/*"],
   "exclude": ["node_modules", "dist"]
 }
