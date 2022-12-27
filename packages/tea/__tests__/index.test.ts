@@ -12,7 +12,7 @@ import { createSimpleTea } from "../__utils__/simple";
 jest.useFakeTimers();
 
 describe("tea", () => {
-  it("should produce the correct states when sync", (done) => {
+  it("should produce the correct states when sync", () => {
     const tea = createSimpleTea(initSimpleModel);
     let expectationIndex = 0;
 
@@ -28,8 +28,6 @@ describe("tea", () => {
     simpleMsgs.forEach((msg) => {
       tea.dispatch(msg);
     });
-
-    done();
   });
 
   it("should produce the correct states when async", (done) => {
@@ -54,18 +52,16 @@ describe("tea", () => {
 });
 
 describe("subscribe", () => {
-  it("should produce to observer as soon as it subscribes", (done) => {
+  it("should produce to observer as soon as it subscribes", () => {
     const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
     tea.subscribe(observer);
 
     expect(observer).toHaveBeenCalledTimes(1);
-
-    done();
   });
 
-  it("should be triggered after a dispatch is called", (done) => {
+  it("should be triggered after a dispatch is called", () => {
     const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
@@ -80,11 +76,9 @@ describe("subscribe", () => {
     tea.dispatch(simpleInc());
 
     expect(observer).toHaveBeenCalledTimes(3);
-
-    done();
   });
 
-  it("should stop producing to observer when it unsubscribes", (done) => {
+  it("should stop producing to observer when it unsubscribes", () => {
     const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
@@ -98,13 +92,11 @@ describe("subscribe", () => {
     tea.dispatch(simpleInc());
 
     expect(observer).toHaveBeenCalledTimes(2);
-
-    done();
   });
 });
 
 describe("complete", () => {
-  it("should stop producing to observers", (done) => {
+  it("should stop producing to observers", () => {
     const observer1 = jest.fn();
     const observer2 = jest.fn();
 
@@ -123,13 +115,11 @@ describe("complete", () => {
 
     expect(observer1).toHaveBeenCalledTimes(1);
     expect(observer2).toHaveBeenCalledTimes(1);
-
-    done();
   });
 });
 
 describe("getState", () => {
-  it("should return the current state", (done) => {
+  it("should return the current state", () => {
     const tea = createSimpleTea(initSimpleModel);
 
     expect(tea.getState()).toEqual(initSimpleModel);
@@ -137,11 +127,9 @@ describe("getState", () => {
     tea.dispatch(simpleInc());
 
     expect(tea.getState()).toEqual({ ...initSimpleModel, counter: 1 });
-
-    done();
   });
 
-  it("should return the same state idempotent", (done) => {
+  it("should be idempotent", () => {
     const tea = createSimpleTea(initSimpleModel);
 
     expect(tea.getState()).toBe(tea.getState());
@@ -149,7 +137,5 @@ describe("getState", () => {
     tea.dispatch(simpleDec());
 
     expect(tea.getState()).toBe(tea.getState());
-
-    done();
   });
 });
