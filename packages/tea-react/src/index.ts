@@ -5,7 +5,6 @@ import {
   createElement,
   useRef,
   useContext as useReactContext,
-  useEffect,
   useMemo,
 } from "react";
 

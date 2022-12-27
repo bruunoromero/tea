@@ -7,7 +7,7 @@ import {
   SimpleRemoveTask,
   SimpleSetUser,
   SimpleTask,
-} from "../__utils__/simple";
+} from "../__fixtures__/sync";
 
 export const simpleInc = (): SimpleInc => ({ type: "Inc" });
 export const simpleDec = (): SimpleDec => ({ type: "Dec" });

@@ -1,13 +1,13 @@
-import { asyncExpectations, initAsyncModel } from "../__fixtures__/async";
+import { asyncExpectations, initAsyncModel } from "../__utils__/async";
 import {
   initSimpleModel,
   simpleDec,
   simpleExpectations,
   simpleInc,
   simpleMsgs,
-} from "../__fixtures__/simple";
-import { createAsyncTea } from "../__utils__/async";
-import { createSimpleTea } from "../__utils__/simple";
+} from "../__utils__/sync";
+import { createAsyncTea } from "../__fixtures__/async";
+import { createSimpleTea } from "../__fixtures__/sync";
 
 jest.useFakeTimers();
 
