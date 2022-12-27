@@ -2,18 +2,18 @@ import { Cmd, create, Tea, Update } from "../src";
 
 export type Done = () => void;
 
-export type DoneMsg = { type: "done" };
+export type DoneMsg = { type: "Done" };
 
 export type Doneable<T extends object> = T & { done: boolean };
 
 export type DoneableMsg<T> = T | DoneMsg;
 
 export const doneMsg = (): DoneMsg => ({
-  type: "done",
+  type: "Done",
 });
 
 const isMsgDone = (msg: any): msg is DoneMsg => {
-  return typeof msg === "object" && msg.type === "done";
+  return typeof msg === "object" && msg.type === "Done";
 };
 
 export const handleDone = <S extends object, M>(
@@ -47,6 +47,7 @@ export const createDoneableTea = <S extends object, M>(
   const tea = create(liftedInit, liftedUpdated);
 
   const subscribe = tea.subscribe;
+
   tea.subscribe = (observer) =>
     subscribe((model) => {
       if (model.done) {

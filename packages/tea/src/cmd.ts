@@ -1,9 +1,7 @@
 import { EMPTY, Observable, of, merge } from "rxjs";
 import { map as RxMap } from "rxjs/operators";
 
-type Task<M> = () => Promise<M>;
-
-export type Cmd<M> = Observable<Task<M>>;
+export type Cmd<M> = Observable<() => Promise<M>>;
 
 const batch = <M>(cmds: Cmd<M>[]): Cmd<M> => {
   return merge(...cmds);
@@ -14,11 +12,7 @@ const task = <M>(task: () => Promise<M>): Cmd<M> => {
 };
 
 const map = <N, M>(cmd: Cmd<N>, mapper: (msg: N) => M): Cmd<M> => {
-  const mapTask = (task: Task<N>): Task<M> => {
-    return () => task().then(mapper);
-  };
-
-  return cmd.pipe(RxMap((task) => mapTask(task)));
+  return cmd.pipe(RxMap((task) => () => task().then(mapper)));
 };
 
 const none: Cmd<never> = EMPTY;

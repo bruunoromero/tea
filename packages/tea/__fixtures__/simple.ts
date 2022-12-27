@@ -8,7 +8,7 @@ import {
   SimpleSetUser,
   SimpleTask,
 } from "../__utils__/simple";
-import { doneMsg, Doneable, DoneableMsg, liftModels } from "../__utils__/tea";
+import { Doneable, DoneableMsg, liftModels } from "../__utils__/tea";
 
 export const simpleInc = (): SimpleInc => ({ type: "Inc" });
 export const simpleDec = (): SimpleDec => ({ type: "Dec" });
@@ -32,6 +32,7 @@ const task3: SimpleTask = { name: "assert it works", desc: "it's working" };
 export const initSimpleModel: SimpleModel = {
   counter: 0,
   tasks: [],
+  done: false,
   user: "Han Solo",
 };
 

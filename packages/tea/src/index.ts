@@ -2,6 +2,8 @@ import { BehaviorSubject, Observer as RxObserver } from "rxjs";
 import { startWith, map, distinctUntilChanged, mergeAll } from "rxjs/operators";
 import { Cmd } from "./cmd";
 
+export { Cmd } from "./cmd";
+
 export type Update<S, M> = (state: S, message: M) => [S, Cmd<M>];
 
 export type Dispatch<M> = (message: M) => void;
@@ -16,8 +18,6 @@ export type Tea<S, M> = {
   dispatch: Dispatch<M>;
   complete: () => void;
 };
-
-export { Cmd } from "./cmd";
 
 export const create = <S, M>(
   init: [S, Cmd<M>],

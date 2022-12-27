@@ -1,11 +1,56 @@
+import { asyncExpectations } from "../__fixtures__/async";
 import {
   initSimpleModel,
   simpleExpectations,
   simpleInc,
   simpleMsgs,
 } from "../__fixtures__/simple";
+import { createAsyncTea } from "../__utils__/async";
 import { createSimpleTea } from "../__utils__/simple";
 import { doneMsg } from "../__utils__/tea";
+
+jest.useFakeTimers();
+
+describe("tea", () => {
+  it("should produce the correct states when sync", (done) => {
+    const tea = createSimpleTea(initSimpleModel, done);
+    let expectationIndex = 0;
+
+    tea.subscribe((model) => {
+      const expected = simpleExpectations[expectationIndex];
+      if (expected) {
+        expect(model).toEqual(expected);
+      }
+
+      expectationIndex += 1;
+    });
+
+    simpleMsgs.forEach((msg) => {
+      tea.dispatch(msg);
+    });
+
+    tea.dispatch(doneMsg());
+  });
+
+  it("should produce the correct states when async", (done) => {
+    const tea = createAsyncTea({ tasks: [], error: "" });
+
+    let expectationIndex = 0;
+
+    tea.subscribe((model) => {
+      const expected = asyncExpectations[expectationIndex];
+      if (expected) {
+        expect(model).toEqual(expected);
+      }
+
+      if (model.tasks) {
+        done();
+      }
+
+      expectationIndex += 1;
+    });
+  });
+});
 
 describe("subscribe", () => {
   it("should produce to observer as soon as it subscribes", (done) => {
@@ -55,24 +100,47 @@ describe("subscribe", () => {
 
     done();
   });
+});
 
-  it("should produce the correct states", (done) => {
+describe("complete", () => {
+  it("should stop producing to observers", (done) => {
+    const observer1 = jest.fn();
+    const observer2 = jest.fn();
+
     const tea = createSimpleTea(initSimpleModel, done);
-    let subscriptionIndex = 0;
 
-    tea.subscribe((model) => {
-      const expected = simpleExpectations[subscriptionIndex];
-      if (expected) {
-        expect(model).toEqual(expected);
-      }
+    tea.subscribe(observer1);
+    tea.subscribe(observer2);
 
-      subscriptionIndex += 1;
-    });
+    expect(observer1).toHaveBeenCalledTimes(1);
+    expect(observer2).toHaveBeenCalledTimes(1);
 
-    simpleMsgs.forEach((msg) => {
-      tea.dispatch(msg);
-    });
+    tea.complete();
 
-    tea.dispatch(doneMsg());
+    tea.dispatch(simpleInc());
+    tea.dispatch(simpleInc());
+
+    expect(observer1).toHaveBeenCalledTimes(1);
+    expect(observer2).toHaveBeenCalledTimes(1);
+
+    done();
+  });
+});
+
+describe("getState", () => {
+  it("should return the current state", (done) => {
+    const tea = createSimpleTea(initSimpleModel, done);
+
+    expect(tea.getState()).toEqual(initSimpleModel);
+
+    done();
+  });
+
+  it("should return the same state if it has not changed", (done) => {
+    const tea = createSimpleTea(initSimpleModel, done);
+
+    expect(tea.getState()).toBe(tea.getState());
+
+    done();
   });
 });

@@ -1,11 +1,12 @@
-import { Cmd, create } from "../src";
-import { createDoneableTea, Done, Doneable } from "./tea";
+import { Cmd } from "../src";
+import { createDoneableTea, Done } from "./tea";
 
 export type SimpleTask = { name: string; desc: string };
 
 export type SimpleModel = {
   counter: number;
   user: string;
+  done: boolean;
   tasks: SimpleTask[];
 };
 
