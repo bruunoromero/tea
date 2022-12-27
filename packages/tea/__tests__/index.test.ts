@@ -1,6 +1,7 @@
 import { asyncExpectations, initAsyncModel } from "../__fixtures__/async";
 import {
   initSimpleModel,
+  simpleDec,
   simpleExpectations,
   simpleInc,
   simpleMsgs,
@@ -133,11 +134,19 @@ describe("getState", () => {
 
     expect(tea.getState()).toEqual(initSimpleModel);
 
+    tea.dispatch(simpleInc());
+
+    expect(tea.getState()).toEqual({ ...initSimpleModel, counter: 1 });
+
     done();
   });
 
-  it("should return the same state if it has not changed", (done) => {
+  it("should return the same state idempotent", (done) => {
     const tea = createSimpleTea(initSimpleModel);
+
+    expect(tea.getState()).toBe(tea.getState());
+
+    tea.dispatch(simpleDec());
 
     expect(tea.getState()).toBe(tea.getState());
 
