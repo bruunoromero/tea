@@ -1,4 +1,4 @@
-import { asyncExpectations } from "../__fixtures__/async";
+import { asyncExpectations, initAsyncModel } from "../__fixtures__/async";
 import {
   initSimpleModel,
   simpleExpectations,
@@ -7,13 +7,12 @@ import {
 } from "../__fixtures__/simple";
 import { createAsyncTea } from "../__utils__/async";
 import { createSimpleTea } from "../__utils__/simple";
-import { doneMsg } from "../__utils__/tea";
 
 jest.useFakeTimers();
 
 describe("tea", () => {
   it("should produce the correct states when sync", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
     let expectationIndex = 0;
 
     tea.subscribe((model) => {
@@ -29,21 +28,22 @@ describe("tea", () => {
       tea.dispatch(msg);
     });
 
-    tea.dispatch(doneMsg());
+    done();
   });
 
   it("should produce the correct states when async", (done) => {
-    const tea = createAsyncTea({ tasks: [], error: "" });
+    const tea = createAsyncTea(initAsyncModel);
 
     let expectationIndex = 0;
 
     tea.subscribe((model) => {
+      jest.runAllTimers();
       const expected = asyncExpectations[expectationIndex];
       if (expected) {
         expect(model).toEqual(expected);
       }
 
-      if (model.tasks) {
+      if (model.done) {
         done();
       }
 
@@ -54,7 +54,7 @@ describe("tea", () => {
 
 describe("subscribe", () => {
   it("should produce to observer as soon as it subscribes", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
     tea.subscribe(observer);
@@ -65,7 +65,7 @@ describe("subscribe", () => {
   });
 
   it("should be triggered after a dispatch is called", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
     tea.subscribe(observer);
@@ -84,7 +84,7 @@ describe("subscribe", () => {
   });
 
   it("should stop producing to observer when it unsubscribes", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
     const observer = jest.fn();
 
     const unsubscriber = tea.subscribe(observer);
@@ -107,7 +107,7 @@ describe("complete", () => {
     const observer1 = jest.fn();
     const observer2 = jest.fn();
 
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
 
     tea.subscribe(observer1);
     tea.subscribe(observer2);
@@ -129,7 +129,7 @@ describe("complete", () => {
 
 describe("getState", () => {
   it("should return the current state", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
 
     expect(tea.getState()).toEqual(initSimpleModel);
 
@@ -137,7 +137,7 @@ describe("getState", () => {
   });
 
   it("should return the same state if it has not changed", (done) => {
-    const tea = createSimpleTea(initSimpleModel, done);
+    const tea = createSimpleTea(initSimpleModel);
 
     expect(tea.getState()).toBe(tea.getState());
 

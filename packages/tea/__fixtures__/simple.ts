@@ -8,7 +8,6 @@ import {
   SimpleSetUser,
   SimpleTask,
 } from "../__utils__/simple";
-import { Doneable, DoneableMsg, liftModels } from "../__utils__/tea";
 
 export const simpleInc = (): SimpleInc => ({ type: "Inc" });
 export const simpleDec = (): SimpleDec => ({ type: "Dec" });
@@ -32,11 +31,10 @@ const task3: SimpleTask = { name: "assert it works", desc: "it's working" };
 export const initSimpleModel: SimpleModel = {
   counter: 0,
   tasks: [],
-  done: false,
   user: "Han Solo",
 };
 
-export const simpleMsgs: DoneableMsg<SimpleMsg>[] = [
+export const simpleMsgs: SimpleMsg[] = [
   simpleInc(),
   simpleInc(),
   simpleDec(),
@@ -52,7 +50,7 @@ export const simpleMsgs: DoneableMsg<SimpleMsg>[] = [
   simpleRemoveTask(task3),
 ];
 
-export const simpleExpectations: Doneable<SimpleModel>[] = liftModels([
+export const simpleExpectations: SimpleModel[] = [
   initSimpleModel,
   { counter: 1, user: "Han Solo", tasks: [] },
   { counter: 2, user: "Han Solo", tasks: [] },
@@ -67,4 +65,4 @@ export const simpleExpectations: Doneable<SimpleModel>[] = liftModels([
   { counter: 0, user: "Han Solo", tasks: [task1, task3] },
   { counter: 0, user: "Han Solo", tasks: [task3] },
   initSimpleModel,
-]);
+];

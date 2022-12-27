@@ -1,12 +1,10 @@
-import { Cmd } from "../src";
-import { createDoneableTea, Done } from "./tea";
+import { Cmd, create } from "../src";
 
 export type SimpleTask = { name: string; desc: string };
 
 export type SimpleModel = {
   counter: number;
   user: string;
-  done: boolean;
   tasks: SimpleTask[];
 };
 
@@ -44,5 +42,5 @@ const update = (
   }
 };
 
-export const createSimpleTea = (model: SimpleModel, done: Done) =>
-  createDoneableTea([model, Cmd.none], update, done);
+export const createSimpleTea = (model: SimpleModel) =>
+  create([model, Cmd.none], update);

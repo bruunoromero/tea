@@ -1,9 +1,9 @@
 import { Cmd, create } from "../src";
-import { createDoneableTea, Done } from "./tea";
 
 export type AsyncModel = {
   error: string;
   tasks: string[];
+  done: boolean;
 };
 
 export type AsyncFetchTasksSuccess = {
@@ -16,7 +16,12 @@ export type AsyncFetchTasksFailed = {
   error: string;
 };
 
-export type AsyncMsg = AsyncFetchTasksSuccess | AsyncFetchTasksFailed;
+export type AsyncDone = { type: "Done" };
+
+export type AsyncMsg =
+  | AsyncFetchTasksSuccess
+  | AsyncFetchTasksFailed
+  | AsyncDone;
 
 export const successTasks = ["abc", "def", "ghi"];
 
@@ -39,12 +44,19 @@ const fetchTasksFailed = Cmd.task(() =>
   delay({ type: "FetchTasksFailed", error: failedError }, 500)
 );
 
-const update = (_: AsyncModel, msg: AsyncMsg): [AsyncModel, Cmd<AsyncMsg>] => {
+const done = Cmd.task<AsyncDone>(async () => ({ type: "Done" }));
+
+const update = (
+  model: AsyncModel,
+  msg: AsyncMsg
+): [AsyncModel, Cmd<AsyncMsg>] => {
   switch (msg.type) {
     case "FetchTasksSuccess":
-      return [{ tasks: msg.tasks, error: "" }, Cmd.none];
+      return [{ ...model, tasks: msg.tasks, error: "" }, done];
     case "FetchTasksFailed":
-      return [{ tasks: [], error: msg.error }, fetchTaskSuccess];
+      return [{ ...model, tasks: [], error: msg.error }, fetchTaskSuccess];
+    case "Done":
+      return [{ ...model, done: true }, Cmd.none];
   }
 };
 
